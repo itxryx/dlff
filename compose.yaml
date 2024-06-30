@@ -8,9 +8,12 @@ services:
     volumes:
       - ./:/dlff
       - ./docker/nginx/conf:/etc/nginx
+      - ./public_docroot:/usr/share/nginx/html
+    ports:
+      - 8080:80
     depends_on:
       - php-fpm
-    tty: true
+    # tty: true
 
   php-fpm:
     container_name: dlff-php
@@ -21,4 +24,7 @@ services:
     volumes:
       - ./:/dlff
       - ./docker/php-fpm/conf:/usr/local/etc/php
-    tty: true
+      - ./public_docroot:/var/www/html
+    expose:
+      - 9000
+    # tty: true
