@@ -1,0 +1,22 @@
+{
+    "name": "itxryx/dlff",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Dlff\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.3"
+    },
+    "config": {
+        "platform": {
+            "php": "8.3"
+        }
+    }
+}
