@@ -1,4 +1,17 @@
 services:
+  nginx:
+    container_name: dlff-nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    working_dir: /dlff
+    volumes:
+      - ./:/dlff
+      - ./docker/nginx/conf:/etc/nginx
+    depends_on:
+      - php-fpm
+    tty: true
+
   php-fpm:
     container_name: dlff-php
     build:
