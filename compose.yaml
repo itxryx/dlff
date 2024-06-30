@@ -41,7 +41,6 @@ services:
       TZ: Asia/Tokyo
     depends_on:
       - php-fpm
-    # tty: true
 
   php-fpm:
     container_name: dlff-php
@@ -60,4 +59,3 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-    # tty: true
