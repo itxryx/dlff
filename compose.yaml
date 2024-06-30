@@ -11,6 +11,8 @@ services:
       - ./public_docroot:/usr/share/nginx/html
     ports:
       - 8080:80
+    environment:
+      TZ: Asia/Tokyo
     depends_on:
       - php-fpm
     # tty: true
@@ -27,4 +29,6 @@ services:
       - ./public_docroot:/var/www/html
     expose:
       - 9000
+    environment:
+      TZ: Asia/Tokyo
     # tty: true
