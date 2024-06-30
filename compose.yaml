@@ -1,0 +1,11 @@
+services:
+  php-fpm:
+    container_name: dlff-php
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    working_dir: /dlff
+    volumes:
+      - ./:/dlff
+      - ./docker/php-fpm/conf:/usr/local/etc/php
+    tty: true
