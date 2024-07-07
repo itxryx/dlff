@@ -1,0 +1,61 @@
+services:
+  mysql:
+    container_name: dlff-mysql
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: dev_root_password
+      MYSQL_DATABASE: dev_db
+      MYSQL_USER: dlff
+      MYSQL_PASSWORD: dlff
+      TZ: Asia/Tokyo
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/my.cnf
+      - ./docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      # please tuning
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  nginx:
+    container_name: dlff-nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    working_dir: /dlff
+    volumes:
+      - ./:/dlff
+      - ./docker/nginx/conf:/etc/nginx
+      - ./public_docroot:/usr/share/nginx/html
+    ports:
+      - 8080:80
+    environment:
+      TZ: Asia/Tokyo
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    container_name: dlff-php
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    working_dir: /dlff
+    volumes:
+      - ./:/dlff
+      - ./docker/php-fpm/conf:/usr/local/etc/php
+      - ./public_docroot:/var/www/html
+    expose:
+      - 9000
+    environment:
+      TZ: Asia/Tokyo
+    depends_on:
+      mysql:
+        condition: service_healthy
